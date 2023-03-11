@@ -1,10 +1,7 @@
 import Image from 'next/image';
-import { Roboto_Slab } from 'next/font/google';
 import { HiOutlineMenu } from 'react-icons/hi';
 import { TbMoonFilled, TbSunFilled } from 'react-icons/tb';
 import { FaRegUser } from 'react-icons/fa';
-
-const logoFont = Roboto_Slab({ subsets: ['latin'] });
 
 type Props = {
   darkMode: boolean;
@@ -13,7 +10,7 @@ type Props = {
 
 const Header = ({ darkMode, setDarkMode }: Props) => {
   return (
-    <header className="px-3 py-2 border-b flex items-center justify-between border-gray-200 dark:border-slate-700 w-full dark:bg-slate-800 dark:text-white">
+    <header className="px-3 py-2 border-b-2 flex items-center justify-between border-gray-100 dark:border-slate-700 w-full dark:bg-slate-800 dark:text-white">
       <div className="flex items-center gap-4 flex-1">
         <HiOutlineMenu className="text-2xl text-gray-700 dark:text-white cursor-pointer" />
         <div className="flex items-center cursor-pointer gap-2">
@@ -24,9 +21,7 @@ const Header = ({ darkMode, setDarkMode }: Props) => {
             width={250}
             className="w-8 h-8"
           />
-          <h1
-            className={`${logoFont.className} font-bold uppercase text-gray-800 dark:text-white`}
-          >
+          <h1 className="font-bold uppercase text-gray-800 dark:text-white">
             Easy Copy
           </h1>
         </div>

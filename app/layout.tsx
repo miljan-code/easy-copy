@@ -2,31 +2,28 @@
 
 import { useState } from 'react';
 import { Header, Sidebar } from './components';
-import { Raleway } from 'next/font/google';
 import './globals.css';
-
-export const metadata = {
-  title: 'EasyCopy — AI powered Grammar Checker',
-  description: 'Copywriting with the power of AI',
-};
-
-const raleway = Raleway({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-});
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   return (
     <html lang="en">
-      <body className={`${raleway.className} ${darkMode ? 'dark' : ''}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${darkMode ? 'dark' : ''}`}>
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-        <main className="flex dark:bg-slate-800 dark:text-white min-h-screen">
+        <main className="flex dark:bg-slate-800 dark:text-white h-[calc(100vh-50px)]">
           <Sidebar />
           <section className="flex-1">{children}</section>
         </main>

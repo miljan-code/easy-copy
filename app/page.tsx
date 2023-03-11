@@ -1,7 +1,11 @@
+import { GrammarProvider } from '@/context/GrammarContext';
+import { GrammarChecker, PageInfo } from './components';
+
 export default function Home() {
   return (
-    <main>
-      <p>Hello World!</p>
-    </main>
+    <GrammarProvider>
+      <GrammarChecker />
+      <PageInfo />
+    </GrammarProvider>
   );
 }
