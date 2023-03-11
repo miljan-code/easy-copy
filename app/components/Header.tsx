@@ -21,7 +21,7 @@ const Header = ({ darkMode, setDarkMode }: Props) => {
             width={250}
             className="w-8 h-8"
           />
-          <h1 className="font-bold uppercase text-gray-800 dark:text-white">
+          <h1 className="font-bold uppercase text-[#55acee] font-tilt">
             Easy Copy
           </h1>
         </div>

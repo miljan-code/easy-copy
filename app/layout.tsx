@@ -9,21 +9,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${darkMode ? 'dark' : ''}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&family=Tilt+Neon&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className={`${darkMode ? 'dark' : ''}`}>
+      <body className="bg-white text-black dark:bg-slate-800 dark:text-white">
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-        <main className="flex dark:bg-slate-800 dark:text-white h-[calc(100vh-50px)]">
+        <main className="flex dark:bg-slate-800 dark:text-white">
           <Sidebar />
           <section className="flex-1">{children}</section>
         </main>

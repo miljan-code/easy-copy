@@ -3,3 +3,12 @@ interface NavLinkType {
   link: string;
   color: string;
 }
+
+type ParaphrasingModeType =
+  | 'standard'
+  | 'fluent'
+  | 'formal'
+  | 'simple'
+  | 'creative'
+  | 'expanded'
+  | 'shorten';

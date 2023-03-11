@@ -9,6 +9,7 @@ module.exports = {
       },
       fontFamily: {
         raleway: ['Raleway', 'sans-serif'],
+        tilt: ['Tilt Neon', 'cursive'],
       },
     },
   },

@@ -22,7 +22,7 @@ const NavLink = ({ data }: { data: NavLinkType }) => {
 
   return (
     <Link href={data.link}>
-      <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 py-2 pr-4">
+      <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 transition-colors dark:hover:bg-slate-700 py-2 pr-4">
         <div
           className={`h-6 w-1 rounded-r-md ${
             pathname === data.link ? color : ''

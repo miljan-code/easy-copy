@@ -1,5 +1,13 @@
+import { ParaphraseProvider } from '@/context/ParaphraseContext';
+import { Paraphraser, PageInfo } from './components';
+
 const ParaphraserPage = () => {
-  return <div>ParaphraserPage</div>;
+  return (
+    <ParaphraseProvider>
+      <Paraphraser />
+      <PageInfo />
+    </ParaphraseProvider>
+  );
 };
 
 export default ParaphraserPage;

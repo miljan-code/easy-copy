@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useContext } from 'react';
 import { GrammarContext } from '@/context/GrammarContext';
+import { putCursorAtTheEndOf, preventRichText } from '@/utils/helpers';
 
 const GrammarInput = () => {
   const [inputText, setInputText] = useState('');
@@ -16,37 +17,36 @@ const GrammarInput = () => {
   const wordsCount = inputText.split(' ').filter(i => i !== '').length;
 
   useEffect(() => {
-    // FIXME: put the cursor at the end of text
-    const preventRichText = (e: ClipboardEvent) => {
-      e.preventDefault();
-      const plainText = e.clipboardData?.getData('text/plain') || '';
-      inputRef.current!.innerText = plainText;
-    };
+    inputRef.current!.spellcheck = false;
 
-    inputRef.current?.addEventListener('paste', preventRichText);
+    inputRef.current?.addEventListener('paste', e =>
+      preventRichText(e, inputRef)
+    );
 
     return () =>
-      inputRef.current?.removeEventListener('paste', preventRichText);
+      inputRef.current?.removeEventListener('paste', e =>
+        preventRichText(e, inputRef)
+      );
   }, []);
 
-  // TODO:
-  // useEffect(() => {
-  //   // Whenever errors array change loop
-  //   // Loop through all words in input field and
-  //   // mark those words that are marked as grammarly incorrect
-  //   const currentText = inputRef.current?.innerText.split(' ');
+  useEffect(() => {
+    const currentText = inputRef.current?.innerText.split(' ');
 
-  //   const markedWords = currentText?.map(word => {
-  //     if (errors?.includes(word)) {
-  //       return `<span className="text-red-700">${word}</span>`;
-  //     } else {
-  //       return word;
-  //     }
-  //   });
+    const markedWords = currentText?.map(word => {
+      if (errors?.includes(word)) {
+        return `<span class="text-red-700 font-bold">${word}</span>`;
+      } else {
+        return word;
+      }
+    });
 
-  //   const editedText = markedWords!.join(' ');
-  // }, [errors]);
+    const editedText = `<p>${markedWords!.join(' ')}</p>`;
+    inputRef.current!.innerHTML = editedText;
 
+    putCursorAtTheEndOf(inputRef);
+  }, [errors]);
+
+  // TODO: refactor
   const checkForErrors = async () => {
     if (inputText.trim().length === 0) return;
 
@@ -87,11 +87,13 @@ const GrammarInput = () => {
 
     setInputText(inputRef.current?.innerText!);
     clearTimeout(timer);
+    // TODO: maybe fire this after 1s?
     setTimer(setTimeout(() => checkForErrors(), 2000));
   };
 
   return (
     <div className="flex-1 border-r-2 border-gray-100 dark:border-slate-800 py-2 px-4">
+      {/* FIXME: add overscroll after h-400px */}
       <div
         ref={inputRef}
         contentEditable={true}
@@ -102,6 +104,7 @@ const GrammarInput = () => {
         <p>
           {wordsCount} <span className="text-sm">Words</span>
         </p>
+        {/* FIXME: sometime shows errors even if there arent any */}
         <p
           className={`${
             errorCount > 0 ? 'bg-red-700 text-white' : ''
@@ -113,7 +116,7 @@ const GrammarInput = () => {
         <div className="ml-auto">
           <button
             onClick={fixErrors}
-            className="bg-green-800 text-white px-2 py-1 rounded-md"
+            className="bg-green-800 text-white px-5 py-2 rounded-full text-sm hover:bg-green-700 transition-colors"
           >
             Fix Me
           </button>
