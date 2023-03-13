@@ -17,8 +17,9 @@ export default async function handler(
     res.status(400).json({ response: 'Please add some text...' });
   }
 
-  const question = `Rewrite quoted text grammarly correct "${prompt}"`;
+  const question = `Write an article about "${prompt}"`;
   const answer = (await query(question)) || 'Something went wrong...';
+
   const response = answer.slice(2);
 
   res.status(200).json({ response });

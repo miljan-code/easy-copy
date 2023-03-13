@@ -1,16 +1,26 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { ParaphraseContext } from '@/context/ParaphraseContext';
+import { CopyButton } from '@/app/components';
 
 const ParaphraserOutput = () => {
   const { paraphrased } = useContext(ParaphraseContext);
 
+  const outputRef = useRef<HTMLDivElement>(null);
+
   return (
-    // TODO: Add loading state
-    // FIXME: outputed text should have some white space and nice format
+    // FIXME: needs formated output!
     <div className="flex-1 px-4 py-2">
-      <p className="whitespace-pre-wrap">{paraphrased}</p>
+      <div
+        ref={outputRef}
+        className="h-[400px] overflow-y-auto whitespace-pre-wrap custom-scroll"
+      >
+        {paraphrased}
+      </div>
+      <div className="flex justify-center items-center">
+        <CopyButton isDisabled={!paraphrased} ref={outputRef} />
+      </div>
     </div>
   );
 };

@@ -40,9 +40,9 @@ const Header = ({ darkMode, setDarkMode }: Props) => {
             <TbSunFilled className="text-slate-700 dark:text-white" />
           )}
         </div>
-        <div className="bg-gray-200 dark:bg-slate-700 p-2 rounded-full cursor-pointer">
+        {/* <div className="bg-gray-200 dark:bg-slate-700 p-2 rounded-full cursor-pointer">
           <FaRegUser className="text-slate-700 dark:text-white" />
-        </div>
+        </div> */}
       </div>
     </header>
   );

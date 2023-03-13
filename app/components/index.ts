@@ -5,6 +5,7 @@ import PageInfo from './PageInfo';
 import GrammarChecker from './GrammarChecker';
 import GrammarInput from './GrammarInput';
 import GrammarOutput from './GrammarOutput';
+import CopyButton from './CopyButton';
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   PageInfo,
   GrammarInput,
   GrammarOutput,
+  CopyButton,
 };

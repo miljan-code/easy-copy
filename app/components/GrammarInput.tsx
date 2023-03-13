@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useContext } from 'react';
 import { GrammarContext } from '@/context/GrammarContext';
 import { putCursorAtTheEndOf, preventRichText } from '@/utils/helpers';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const MIN_LENGTH = 5; // minimum length of text in term of letter in order for error checking to begin
 
@@ -11,6 +12,7 @@ const GrammarInput = () => {
   const [timer, setTimer] = useState<NodeJS.Timeout>();
   const [errors, setErrors] = useState<string[]>();
   const [errorCount, setErrorCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { setOutputText } = useContext(GrammarContext);
 
@@ -50,7 +52,6 @@ const GrammarInput = () => {
     putCursorAtTheEndOf(inputRef);
   }, [errors]);
 
-  // TODO: refactor
   const checkForErrors = async () => {
     if (inputText.trim().length < MIN_LENGTH) return;
 
@@ -72,7 +73,7 @@ const GrammarInput = () => {
   const fixErrors = async () => {
     if (inputText.trim().length < MIN_LENGTH) return;
 
-    // FIXME: Cant fix longer text...
+    setIsLoading(true);
 
     await fetch('/api/get-correct-text', {
       method: 'POST',
@@ -84,7 +85,8 @@ const GrammarInput = () => {
       .then(res => res.json())
       .then(data => {
         setOutputText(data.response);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const typingHandler = () => {
@@ -121,13 +123,14 @@ const GrammarInput = () => {
           {inputText.length < MIN_LENGTH ? 0 : errorCount}{' '}
           <span className="text-sm">{errorCount > 1 ? 'Errors' : 'Error'}</span>
         </p>
-        <div className="ml-auto">
+        <div className="ml-auto flex gap-2 items-center">
           <button
             onClick={fixErrors}
             className="bg-green-800 text-white px-5 py-2 rounded-full text-sm hover:bg-green-700 transition-colors"
           >
             Fix Me
           </button>
+          {isLoading && <AiOutlineLoading3Quarters className="animate-spin" />}
         </div>
       </div>
     </div>
