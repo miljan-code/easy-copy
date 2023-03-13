@@ -20,6 +20,7 @@ export default async function handler(
   // prompt transformation
   const question = `Write quoted text with correct grammar "${prompt}"`;
 
+  // FIXME: when its longer prompt it returns undefined?!
   const answer = (await query(question)) || 'Something went wrong...';
 
   const response = answer.replaceAll('\n', '').replaceAll('"', '');

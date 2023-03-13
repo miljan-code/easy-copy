@@ -11,6 +11,9 @@ module.exports = {
         raleway: ['Raleway', 'sans-serif'],
         tilt: ['Tilt Neon', 'cursive'],
       },
+      colors: {
+        primary: '#55acee',
+      },
     },
   },
   plugins: [],

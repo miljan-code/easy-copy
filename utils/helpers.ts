@@ -16,6 +16,6 @@ export const preventRichText = (
 ) => {
   e.preventDefault();
   const plainText = e.clipboardData?.getData('text/plain') || '';
-  ref.current!.innerText = plainText;
+  ref.current!.innerText += plainText;
   putCursorAtTheEndOf(ref);
 };

@@ -7,3 +7,18 @@
     @apply font-raleway;
   }
 }
+
+@layer utilities {
+  .custom-scroll::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #55acee;
+    border-radius: 10px;
+  }
+
+  .break-word {
+    word-break: break-word;
+  }
+}

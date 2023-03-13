@@ -1,6 +1,6 @@
 export const navLinks: NavLinkType[] = [
   {
-    label: 'Grammer Checker',
+    label: 'Grammar Checker',
     link: '/',
     color: 'green',
   },

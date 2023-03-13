@@ -4,6 +4,8 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import { GrammarContext } from '@/context/GrammarContext';
 import { putCursorAtTheEndOf, preventRichText } from '@/utils/helpers';
 
+const MIN_LENGTH = 5; // minimum length of text in term of letter in order for error checking to begin
+
 const GrammarInput = () => {
   const [inputText, setInputText] = useState('');
   const [timer, setTimer] = useState<NodeJS.Timeout>();
@@ -41,6 +43,8 @@ const GrammarInput = () => {
     });
 
     const editedText = `<p>${markedWords!.join(' ')}</p>`;
+
+    // FIXME: When edited text is inputed some strange \n appear in text that causes some weird behavior
     inputRef.current!.innerHTML = editedText;
 
     putCursorAtTheEndOf(inputRef);
@@ -48,7 +52,7 @@ const GrammarInput = () => {
 
   // TODO: refactor
   const checkForErrors = async () => {
-    if (inputText.trim().length === 0) return;
+    if (inputText.trim().length < MIN_LENGTH) return;
 
     await fetch('/api/get-grammar-errors', {
       method: 'POST',
@@ -59,13 +63,16 @@ const GrammarInput = () => {
     })
       .then(res => res.json())
       .then(data => {
+        if (inputText.length < MIN_LENGTH) return;
         setErrors(data.answer.words);
         setErrorCount(data.answer.errors);
       });
   };
 
   const fixErrors = async () => {
-    if (inputText.trim().length === 0) return;
+    if (inputText.trim().length < MIN_LENGTH) return;
+
+    // FIXME: Cant fix longer text...
 
     await fetch('/api/get-correct-text', {
       method: 'POST',
@@ -87,30 +94,31 @@ const GrammarInput = () => {
 
     setInputText(inputRef.current?.innerText!);
     clearTimeout(timer);
-    // TODO: maybe fire this after 1s?
+    // TODO: 1s?
     setTimer(setTimeout(() => checkForErrors(), 2000));
   };
 
   return (
     <div className="flex-1 border-r-2 border-gray-100 dark:border-slate-800 py-2 px-4">
-      {/* FIXME: add overscroll after h-400px */}
       <div
         ref={inputRef}
         contentEditable={true}
         onKeyUp={typingHandler}
-        className="w-full min-h-[400px] focus:outline-none"
+        className="custom-scroll w-full h-[400px] focus:outline-none overflow-y-auto break-word whitespace-pre-wrap"
       />
+      {/* ^^^^^ FIXME: whitespace-pre-wrap adds weird new lines */}
       <div className="flex items-center gap-2">
         <p>
           {wordsCount} <span className="text-sm">Words</span>
         </p>
-        {/* FIXME: sometime shows errors even if there arent any */}
         <p
           className={`${
-            errorCount > 0 ? 'bg-red-700 text-white' : ''
+            errorCount > 0 && inputText.length > MIN_LENGTH
+              ? 'bg-red-700 text-white'
+              : ''
           } px-2 rounded-md`}
         >
-          {errorCount}{' '}
+          {inputText.length < MIN_LENGTH ? 0 : errorCount}{' '}
           <span className="text-sm">{errorCount > 1 ? 'Errors' : 'Error'}</span>
         </p>
         <div className="ml-auto">
